@@ -10,15 +10,19 @@ void Menu::EDCChoice() {
 	int choice;
 	std::cin >> choice;
 	switch (choice) {
-	case 1:
-		//Call Parity control func
+	case 1: {
+		PrCntrl checker = PrCntrl();
+		checker.Chosen();
 		break;
-	case 2:
+	}
+	case 2: {
 		//Call Vertical and horizontal parity control func
 		break;
-	case 3:
+	}
+	case 3: {
 		//Call CRC func
 		break;
+	}
 	default: 
 		exit(EXIT_SUCCESS);
 	}
