@@ -12,8 +12,7 @@ class PrCntrl {
 		PrCntrl();
 		void Chosen();
 		void CalcDefault(std::vector<std::byte> info);
-		void CheckDefault(std::vector<std::byte> sum);
+		void Check(std::vector<std::byte> sum);
 		void CalcVerticalHorizontal(std::vector<std::byte> info);
-		void CheckVerticalHorizontal(std::vector<std::byte> sum);
 		std::vector<std::byte> GetChecksum();
 };
