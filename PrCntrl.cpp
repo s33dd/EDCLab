@@ -1,11 +1,5 @@
 #include "PrCntrl.h"
 
-#include <bitset>
-
-std::ostream& operator<< (std::ostream& stream, std::byte byte) {
-	return stream << std::bitset<8>(std::to_integer<int>(byte));
-}
-
 std::vector<std::byte> Calc(std::vector<std::byte> info) {
 	std::vector<std::byte> result;
 	for (auto byte : info) {
