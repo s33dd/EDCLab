@@ -1,5 +1,11 @@
 #include "PrCntrl.h"
 
+#include <bitset>
+
+std::ostream& operator<< (std::ostream& stream, std::byte byte) {
+	return stream << std::bitset<8>(std::to_integer<int>(byte));
+}
+
 std::vector<std::byte> Calc(std::vector<std::byte> info) {
 	std::vector<std::byte> result;
 	for (auto byte : info) {
@@ -36,9 +42,12 @@ void PrCntrl::Chosen() {
 		std::cin >> choice;
 		switch (choice) {
 		case 1: {
+			this->checkSum.clear();
 			Reader rdr = Reader(Reader::InputPath());
-			rdr.Read();
-			CalcDefault(rdr.GetInfo());
+			while (!rdr.IsEnd()) {
+				rdr.Read(DEFAULT_PACKAGE);
+				CalcDefault(rdr.GetInfo());
+			}
 			break;
 		}
 
@@ -47,17 +56,22 @@ void PrCntrl::Chosen() {
 				std::cout << "You must calc cheksum first!" << std::endl;
 				break;
 			}
-			Reader rdr = Reader(Reader::InputPath());
-			rdr.Read();
 			PrCntrl inspected = PrCntrl();
-			inspected.CalcDefault(rdr.GetInfo());
+			Reader rdr = Reader(Reader::InputPath());
+			while (!rdr.IsEnd()) {
+				rdr.Read(DEFAULT_PACKAGE);
+				inspected.CalcDefault(rdr.GetInfo());
+			}
 			Check(inspected.GetChecksum());
 			break;
 		}
 		case 3: {
+			this->checkSum.clear();
 			Reader rdr = Reader(Reader::InputPath());
-			rdr.Read();
-			CalcVerticalHorizontal(rdr.GetInfo());
+			while (!rdr.IsEnd()) {
+				rdr.Read(VH_PACKAGE_SIZE);
+				CalcVerticalHorizontal(rdr.GetInfo());
+			}
 			break;
 		}
 		case 4: {
@@ -65,10 +79,12 @@ void PrCntrl::Chosen() {
 				std::cout << "You must calc cheksum first!" << std::endl;
 				break;
 			}
-			Reader rdr = Reader(Reader::InputPath());
-			rdr.Read();
 			PrCntrl inspected = PrCntrl();
-			inspected.CalcVerticalHorizontal(rdr.GetInfo());
+			Reader rdr = Reader(Reader::InputPath());
+			while (!rdr.IsEnd()) {
+				rdr.Read(VH_PACKAGE_SIZE);
+				inspected.CalcVerticalHorizontal(rdr.GetInfo());
+			}
 			Check(inspected.GetChecksum());
 			break;
 		}
@@ -79,8 +95,9 @@ void PrCntrl::Chosen() {
 }
 
 void PrCntrl::CalcDefault(std::vector<std::byte> info) {
-	this->checkSum.clear();
-	this->checkSum = Calc(info);
+		for (auto value : Calc(info)) {
+			this->checkSum.push_back(value);
+		}
 }
 
 void PrCntrl::Check(std::vector<std::byte> sum) {
@@ -93,13 +110,12 @@ void PrCntrl::Check(std::vector<std::byte> sum) {
 }
 
 void PrCntrl::CalcVerticalHorizontal(std::vector<std::byte> info) {
-	this->checkSum.clear();
 	size_t size = info.size();
-	if (size % PACKAGE_SIZE != 0) {
+	if (size % VH_PACKAGE_SIZE != 0) {
 		std::byte emptyByte{ 0 };
-		for (int i = 0; i < (PACKAGE_SIZE - (size % PACKAGE_SIZE)); i++) {
+		for (int i = 0; i < (VH_PACKAGE_SIZE - (size % VH_PACKAGE_SIZE)); i++) {
 			auto pos = info.cbegin();
-			info.insert(pos + PACKAGE_SIZE * (size / PACKAGE_SIZE), emptyByte);
+			info.insert(pos + VH_PACKAGE_SIZE * (size / VH_PACKAGE_SIZE), emptyByte);
 		}
 	}
 	std::vector<std::byte> vert;

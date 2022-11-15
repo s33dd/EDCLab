@@ -3,7 +3,8 @@
 #include <iostream>
 #include "Reader.h"
 #define BYTE_SIZE 8
-#define PACKAGE_SIZE 8
+#define VH_PACKAGE_SIZE 8
+#define DEFAULT_PACKAGE 1
 
 class PrCntrl {
 	private:
