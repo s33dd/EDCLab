@@ -15,7 +15,8 @@ void Menu::EDCChoice() {
 		break;
 	}
 	case 2: {
-		//Call CRC func
+		CRC checker = CRC();
+		checker.Chosen();
 		break;
 	}
 	default: 

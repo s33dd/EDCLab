@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "PrCntrl.h"
+#include "CRC.h"
 
 class Menu {
 	public:

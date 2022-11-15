@@ -27,6 +27,9 @@
     <ClCompile Include="Reader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CRC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Menu.h">
@@ -36,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Reader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CRC.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
