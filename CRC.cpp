@@ -20,6 +20,7 @@ void CRC::Chosen() {
 				Calc(rdr.GetInfo());
 			}
 			ZerosJoining();
+			std::cout << GetChecksum() << std::endl;
 			break;
 		}
 
@@ -67,9 +68,7 @@ void CRC::ZerosJoining() {
 		buffer <<= 1;
 		buffer[0] = zeroBit[0];
 		if (buffer[POLY_SIZE - 1] == 1) {
-			std::cout << buffer << std::endl;
 			buffer ^= polynomial;
-			std::cout << buffer << std::endl;
 		}
 	}
 }

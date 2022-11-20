@@ -1,5 +1,10 @@
 #include "PrCntrl.h"
 
+#include <bitset>
+std::ostream& operator<< (std::ostream& os, std::byte b) {
+	return os << std::bitset<8>(std::to_integer<int>(b));
+}
+
 std::vector<std::byte> Calc(std::vector<std::byte> info) {
 	std::vector<std::byte> result;
 	for (auto byte : info) {
@@ -42,6 +47,9 @@ void PrCntrl::Chosen() {
 				rdr.Read(DEFAULT_PACKAGE);
 				CalcDefault(rdr.GetInfo());
 			}
+			for (auto value : checkSum) {
+				std::cout << value << std::endl;
+			}
 			break;
 		}
 
@@ -65,6 +73,9 @@ void PrCntrl::Chosen() {
 			while (!rdr.IsEnd()) {
 				rdr.Read(VH_PACKAGE_SIZE);
 				CalcVerticalHorizontal(rdr.GetInfo());
+			}
+			for (auto value : checkSum) {
+				std::cout << value << std::endl;
 			}
 			break;
 		}
