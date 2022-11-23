@@ -47,16 +47,21 @@ void CRC::Chosen() {
 
 void CRC::Calc(std::vector<std::byte> info) {
 	std::byte mlt{ 128 }; // byte {1000 0000} for taking the leftmost bit
+	bool isXOR = false;
 	for (auto byte : info) {
 		std::byte tmp{ 0 };
 		for (int i = 0; i < BYTE_SIZE; i++) {
 			tmp = byte & mlt;
 			tmp >>= BYTE_SIZE - 1;
+			if (buffer[POLY_SIZE-1] == 1) {
+				isXOR = true;
+			}
 			buffer <<= 1;
 			buffer |= std::bitset<POLY_SIZE>(std::to_integer<int>(tmp));
-			if (buffer[POLY_SIZE - 1] == 1) {
+			if (isXOR) {
 				buffer ^= polynomial;
 			}
+			isXOR = false;
 			byte <<= 1;
 		}
 	}
@@ -64,16 +69,21 @@ void CRC::Calc(std::vector<std::byte> info) {
 
 void CRC::ZerosJoining() {
 	std::bitset<1> zeroBit{ 0 };
-	for (int i = 0; i < POLY_SIZE - 1; i++) {
+	bool isXOR = false;
+	for (int i = 0; i < POLY_SIZE; i++) {
+		if (buffer[POLY_SIZE - 1] == 1) {
+			isXOR = true;
+		}
 		buffer <<= 1;
 		buffer[0] = zeroBit[0];
-		if (buffer[POLY_SIZE - 1] == 1) {
+		if (isXOR) {
 			buffer ^= polynomial;
 		}
+		isXOR = false;
 	}
 }
 
-void CRC::Check(std::bitset<POLY_SIZE - 1> sum) {
+void CRC::Check(std::bitset<POLY_SIZE> sum) {
 	if (this->GetChecksum() == sum) {
 		std::cout << std::endl << "Verification passed" << std::endl;
 	}
@@ -82,9 +92,9 @@ void CRC::Check(std::bitset<POLY_SIZE - 1> sum) {
 	}
 }
 
-std::bitset<POLY_SIZE - 1> CRC::GetChecksum() {
-	std::bitset<POLY_SIZE - 1> checkSum;
-	for (int i = POLY_SIZE - 2; i >= 0; i--) {
+std::bitset<POLY_SIZE> CRC::GetChecksum() {
+	std::bitset<POLY_SIZE> checkSum;
+	for (int i = POLY_SIZE - 1; i >= 0; i--) {
 		checkSum[i] = buffer[i];
 	}
 	return checkSum;

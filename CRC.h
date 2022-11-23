@@ -16,7 +16,7 @@ public:
 	void Chosen();
 	void Calc(std::vector<std::byte> info);
 	void ZerosJoining();
-	void Check(std::bitset<POLY_SIZE - 1> sum);
-	std::bitset<POLY_SIZE - 1> GetChecksum();
+	void Check(std::bitset<POLY_SIZE> sum);
+	std::bitset<POLY_SIZE> GetChecksum();
 };
 
